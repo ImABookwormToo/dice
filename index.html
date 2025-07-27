@@ -2,82 +2,24 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Canvas Dice Roller</title>
+  <title>3D Dice Roller</title>
   <style>
-    body {
-      text-align: center;
-      font-family: Arial, sans-serif;
-      padding-top: 30px;
-    }
-    canvas {
-      border: 2px solid #333;
-      margin-top: 20px;
-    }
-    button {
-      font-size: 16px;
+    body { margin: 0; overflow: hidden; }
+    canvas { display: block; }
+    #rollButton {
+      position: absolute;
+      top: 20px;
+      left: 20px;
       padding: 10px 20px;
-      margin-top: 20px;
+      font-size: 16px;
+      z-index: 1;
     }
   </style>
 </head>
 <body>
-
-  <h1>🎲 Canvas Dice Roller (d6)</h1>
-  <button onclick="startRoll()">Roll the Die</button>
-  <canvas id="diceCanvas" width="200" height="200"></canvas>
-
-  <script>
-    const canvas = document.getElementById("diceCanvas");
-    const ctx = canvas.getContext("2d");
-
-    const diceFaces = {
-      1: [[100, 100]],
-      2: [[50, 50], [150, 150]],
-      3: [[50, 50], [100, 100], [150, 150]],
-      4: [[50, 50], [150, 50], [50, 150], [150, 150]],
-      5: [[50, 50], [150, 50], [100, 100], [50, 150], [150, 150]],
-      6: [[50, 50], [150, 50], [50, 100], [150, 100], [50, 150], [150, 150]]
-    };
-
-    let rolling = false;
-    let rollInterval;
-    let finalFace;
-
-    function drawDie(face) {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.fillStyle = "#fff";
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-      ctx.strokeStyle = "#000";
-      ctx.lineWidth = 4;
-      ctx.strokeRect(10, 10, 180, 180);
-
-      ctx.fillStyle = "#000";
-      diceFaces[face].forEach(([x, y]) => {
-        ctx.beginPath();
-        ctx.arc(x, y, 10, 0, Math.PI * 2);
-        ctx.fill();
-      });
-    }
-
-    function startRoll() {
-      if (rolling) return;
-      rolling = true;
-      let count = 0;
-      rollInterval = setInterval(() => {
-        const face = Math.floor(Math.random() * 6) + 1;
-        drawDie(face);
-        count++;
-        if (count > 15) {
-          clearInterval(rollInterval);
-          finalFace = Math.floor(Math.random() * 6) + 1;
-          drawDie(finalFace);
-          rolling = false;
-        }
-      }, 100);
-    }
-
-    drawDie(1);
-  </script>
-
+  <button id="rollButton">🎲 Roll Dice</button>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/cannon-es@0.20.0/dist/cannon-es.js"></script>
+  <script src="dice.js"></script>
 </body>
 </html>
